@@ -1,0 +1,176 @@
+{
+  "info": {
+    "name": "Market Data Aggregator API",
+    "description": "Collection for testing the Market Data Aggregator microservices",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Gateway API",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "health"]
+            },
+            "description": "Check the health status of the Gateway API"
+          }
+        },
+        {
+          "name": "Get Market Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/market/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "market", "summary"]
+            },
+            "description": "Get aggregated market data from Price Service"
+          }
+        },
+        {
+          "name": "Create Alert",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"symbol\": \"AAPL\",\n  \"targetPrice\": 180.0,\n  \"condition\": \"above\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/alerts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "alerts"]
+            },
+            "description": "Create a new price alert (proxied to Alert Service)"
+          }
+        },
+        {
+          "name": "Get Alerts by Symbol",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/alerts/AAPL",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "alerts", "AAPL"]
+            },
+            "description": "Get all alerts for a specific symbol"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Price Service (Direct)",
+      "item": [
+        {
+          "name": "Get Price by Symbol",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/prices/AAPL",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "prices", "AAPL"]
+            },
+            "description": "Get simulated price for a specific symbol"
+          }
+        },
+        {
+          "name": "Get Batch Prices",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/prices/batch",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "prices", "batch"]
+            },
+            "description": "Get prices for multiple symbols (AAPL, MSFT, BTC)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Alert Service (Direct)",
+      "item": [
+        {
+          "name": "Create Alert",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"symbol\": \"MSFT\",\n  \"targetPrice\": 350.0,\n  \"condition\": \"below\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/api/alerts",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "alerts"]
+            },
+            "description": "Create a new price alert directly in Alert Service"
+          }
+        },
+        {
+          "name": "Get All Alerts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/alerts",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "alerts"]
+            },
+            "description": "Get all alerts from the Alert Service"
+          }
+        },
+        {
+          "name": "Get Alerts by Symbol",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/alerts/MSFT",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "alerts", "MSFT"]
+            },
+            "description": "Get alerts filtered by symbol"
+          }
+        }
+      ]
+    }
+  ]
+}

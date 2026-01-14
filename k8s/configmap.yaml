@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: service-config
+data:
+  price-service-url: "http://price-service:8081"
+  alert-service-url: "http://alert-service:8082"
